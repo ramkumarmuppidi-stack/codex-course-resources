@@ -8,7 +8,7 @@ const baseURL = "http://localhost:3000";
 const password = "correct-horse-battery-staple";
 
 let database: Database;
-let auth: ReturnType<typeof betterAuth>;
+let auth: Pick<ReturnType<typeof betterAuth>, "handler">;
 
 function request(route: string, body?: Record<string, unknown>, cookie?: string) {
   return auth.handler(
