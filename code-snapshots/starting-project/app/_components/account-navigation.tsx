@@ -26,7 +26,13 @@ export function AccountNavigation({ userName }: { userName: string }) {
   return (
     <nav aria-label="Account">
       <span className="account-name">{userName}</span>
-      <button className="button small" type="button" onClick={signOut} disabled={isSigningOut}>
+      <button
+        className="button small"
+        type="button"
+        data-leaves-editor
+        onClick={signOut}
+        disabled={isSigningOut}
+      >
         {isSigningOut ? "Logging out…" : "Log out"}
       </button>
     </nav>

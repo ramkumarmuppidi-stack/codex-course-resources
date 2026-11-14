@@ -11,9 +11,15 @@
     "build": "bun run --bun next build",
     "start": "bun run --bun next start",
     "lint": "oxlint",
-    "format": "oxfmt"
+    "format": "oxfmt",
+    "test:notes": "bun test scripts/notes.test.ts"
   },
   "dependencies": {
+    "@tiptap/core": "^3.34.0",
+    "@tiptap/extension-placeholder": "^3.34.0",
+    "@tiptap/pm": "^3.34.0",
+    "@tiptap/react": "^3.34.0",
+    "@tiptap/starter-kit": "^3.34.0",
     "better-auth": "^1.7.20",
     "next": "16.1.6",
     "react": "19.2.4",

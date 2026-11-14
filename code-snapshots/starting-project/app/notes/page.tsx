@@ -1,7 +1,11 @@
 import Link from "next/link";
-import { notes } from "../_lib/fixtures";
+import { listNotes } from "../_lib/notes";
+
 export const metadata = { title: "Your notes" };
-export default function NotesPage() {
+const dateFormat = new Intl.DateTimeFormat("en", { dateStyle: "medium", timeZone: "UTC" });
+
+export default async function NotesPage() {
+  const notes = await listNotes();
   return (
     <>
       <div className="page-heading">
@@ -16,28 +20,30 @@ export default function NotesPage() {
       </div>
       <div className="list-caption">
         <span>All notes</span>
-        <span>3 notes · Recently updated</span>
+        <span>
+          {notes.length} {notes.length === 1 ? "note" : "notes"} · Recently updated
+        </span>
       </div>
-      <div className="note-grid">
-        {notes.map((note) => (
-          <Link className="card note-card" href={`/notes/${note.id}`} key={note.id}>
-            <span className={`badge ${note.shared ? "shared" : ""}`}>
-              {note.shared ? "Shared" : "Private"}
-            </span>
-            <h2>{note.title}</h2>
-            <p>{note.excerpt}</p>
-            <div className="note-date">
-              {note.date}
-              <span aria-hidden="true">?</span>
-            </div>
-          </Link>
-        ))}
-      </div>
-      <details className="empty-preview">
-        <summary>Preview an empty notebook</summary>
+      {notes.length ? (
+        <div className="note-grid">
+          {notes.map((note) => (
+            <Link className="card note-card" href={`/notes/${note.id}`} key={note.id}>
+              <span className="badge">Your notebook</span>
+              <h2>{note.title || "Untitled note"}</h2>
+              <p>Open to read or edit your note.</p>
+              <div className="note-date">
+                <time dateTime={note.updatedAt}>
+                  Updated {dateFormat.format(new Date(note.updatedAt))}
+                </time>
+                <span aria-hidden="true">↗</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      ) : (
         <div className="empty-state">
           <span className="empty-icon" aria-hidden="true">
-            ?
+            ✎
           </span>
           <h2>A fresh page awaits</h2>
           <p>Your ideas belong here. Start with your first note.</p>
@@ -45,7 +51,7 @@ export default function NotesPage() {
             Create a note
           </Link>
         </div>
-      </details>
+      )}
     </>
   );
 }
